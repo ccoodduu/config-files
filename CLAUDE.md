@@ -7,6 +7,7 @@ Use the right tool for the right job when executing bash commands:
 - **Finding FILES?** → Use `fd` (fast file finder)
 - **Finding TEXT/strings?** → Use `rg` (ripgrep for text search)
 - **Finding CODE STRUCTURE?** → Use `ast-grep` (syntax-aware code search)
+- **LISTING FILES/directories?** → Use `ls` (works in bash/WSL environment)
 - **SELECTING from multiple results?** → Pipe to `fzf` (interactive fuzzy finder)
 - **Interacting with JSON?** → Use `jq` (JSON processor)
 - **Interacting with YAML or XML?** → Use `yq` (YAML/XML processor)
@@ -14,25 +15,55 @@ Use the right tool for the right job when executing bash commands:
 ### Examples:
 
 ```bash
-# Find PHP files and interactively select one
-fd "*.php" | fzf
+# Find C# files (MUST use --glob flag)
+fd --glob "*.cs"
 
-# Search for validation functions and select
+# Find files with depth limit
+fd --glob "*.cs" --max-depth 2
+
+# Search for Controller classes in C# files
+rg "class.*Controller" --type cs
+
+# Search and select interactively
 rg "function.*validate" | fzf
 
-# Find class inheritance patterns
-ast-grep --lang php -p 'class $name extends $parent'
+# Find C# class patterns with ast-grep
+ast-grep run --lang cs -p 'public class $_'
+
+# Find using statements
+ast-grep run --lang cs -p 'using $_'
+
+# List files and directories
+ls
+
+# Process JSON files
+cat package.json | jq '.dependencies'
+
+# Process YAML files (use printf for multi-line)
+printf "name: test\nversion: 1.0" | yq '.name'
+
+# Get repo info or check PR status
+gh repo view
+gh pr list
 ```
 
 ### Installed Tools:
 
-- ✅ **fd** 10.3.0
-- ✅ **rg** 14.1.0 (ripgrep)
-- ✅ **sg** 0.39.4 (ast-grep)
-- ✅ **fzf** 0.65.1
-- ✅ **jq** 1.8.1
-- ✅ **yq** v4.46.1
-- ✅ **gh** (GitHub CLI)
+- ✅ **fd** 10.3.0 (MUST use `--glob "pattern"` syntax)
+- ✅ **rg** 14.1.1 (ripgrep) - Works perfectly with `--type cs` for C#
+- ✅ **ast-grep** 0.39.4 - Use `--lang cs` for C#
+- ✅ **fzf** 0.65.1 - Use `--filter` for non-interactive mode
+- ✅ **jq** 1.8.1 - JSON processing works perfectly
+- ✅ **yq** v4.46.1 - Use `printf` not `echo` for proper YAML formatting
+- ✅ **gh** 2.78.0 (GitHub CLI) - Connected and working
+
+### Important Notes:
+
+- **fd**: Always use `--glob "*.ext"` syntax, NOT just `"*.ext"`
+- **ast-grep**: Works with C# using `--lang cs`
+- **yq**: Use `printf "key: value\nother: data"` for multi-line YAML
+- **fzf**: Can work non-interactively with `--filter` option
+- **rg**: Excellent for C# with `--type cs` flag
 
 ## Code Style Preferences
 
@@ -52,6 +83,9 @@ ast-grep --lang php -p 'class $name extends $parent'
 - Present multiple approaches when ambiguity exists
 - Ask for clarification before implementing when requirements are unclear
 - Discuss trade-offs and implications before beginning implementation
+- **NEVER change the plan or approach mid-implementation without asking first**
+- If you discover issues with the current approach, stop and ask before switching to a different solution
+- Always get explicit approval before pivoting to a new implementation strategy
 
 ## GitHub CLI (gh) Commands
 
