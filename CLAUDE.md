@@ -21,8 +21,8 @@ fd --glob "*.cs"
 # Find files with depth limit
 fd --glob "*.cs" --max-depth 2
 
-# Search for Controller classes in C# files
-rg "class.*Controller" --type cs
+# Search for Controller classes in C# files (use --heading to save tokens)
+rg "class.*Controller" --type cs --heading
 
 # Search and select interactively
 rg "function.*validate" | fzf
@@ -63,7 +63,7 @@ gh pr list
 - **ast-grep**: Works with C# using `--lang cs`
 - **yq**: Use `printf "key: value\nother: data"` for multi-line YAML
 - **fzf**: Can work non-interactively with `--filter` option
-- **rg**: Excellent for C# with `--type cs` flag
+- **rg**: Always use `--heading` flag to save tokens (shows filename once per file). Use `--type cs` for C# files
 
 ## Code Style Preferences
 
