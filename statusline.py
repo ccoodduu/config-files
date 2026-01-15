@@ -271,7 +271,7 @@ def main():
         start_time_str = usage_block.get('startTime')
 
         # Max plan has 5x larger limits - minimum 50M tokens per 5-hour window
-        MAX_PLAN_TOKEN_LIMIT = 50000000
+        MAX_PLAN_TOKEN_LIMIT = 38000000
 
         if reset_time_str and start_time_str:
             start_sec = parse_iso_timestamp(start_time_str)
